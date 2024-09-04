@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+header {
+  display: flex;
+  background-color: #000;
+  color: white;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+}
+header ul {
+  display: flex;
+}
+header ul li {
+  list-style-type: none;
+  margin: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+main h1 {
+  text-align: center;
+}
+.myDiv {
+  display: flex;
+}
+button {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background-color: grey;
+}
+img {
+  border-radius: 5px;
+  width: 250px;
+  height: 250px;
+}
