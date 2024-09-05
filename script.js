@@ -1,6 +1,7 @@
 const tableElement = document.querySelector("table");
 const tableBody = document.querySelector("tbody");
 
+// implemment a button that goes back to the previous page
 let back = document.getElementById("back");
 back.addEventListener("click", () => {
   window.location.href = "home.html";
@@ -11,34 +12,43 @@ back.style.color = "white";
 back.style.margin = "5px";
 
 const addedItems = localStorage.getItem("movies");
+if (addedItems === "[]") {
+  const errorElement = document.createElement("h4");
+  errorElement.innerText = "There are no items in cart yet";
+  tableBody.appendChild(errorElement);
+  console.log("There are no items stored");
+}
+// make items gotten from local storage into their original format(array)
 const parsedItems = JSON.parse(addedItems);
 
 const handleQuantity = (
   increaseButton,
-  negativeButton,
-  paragraphButton,
+  decreaseButton,
+  quantity,
   subTotalElement,
   data
 ) => {
   increaseButton.addEventListener("click", () => {
-    // increase the count when the button is clicked
+    // increase the quantity when the button is clicked
     data.count++;
-    paragraphButton.textContent = data.count;
+    quantity.textContent = data.count;
     handleSubTotal(subTotalElement, data);
   });
-  negativeButton.addEventListener("click", () => {
+  decreaseButton.addEventListener("click", () => {
     if (data.count > 1) {
       // decrease the count when the button is clicked
       data.count--;
-      paragraphButton.textContent = data.count;
+      quantity.textContent = data.count;
       handleSubTotal(subTotalElement, data);
     }
   });
 };
 const handleSubTotal = (subTotalElement, data) => {
   // when i click on the increase button, the subtotal amount increases as well
-  let total = data.price * data.count;
-  subTotalElement.textContent = total;
+  data.subTotal = data.price * data.count;
+  subTotalElement.textContent = data.subTotal;
+  handleTotalAmount();
+  localStorage.setItem("movies", JSON.stringify(parsedItems));
 };
 
 const handleRemove = (removeButton, tableRow, id) => {
@@ -56,12 +66,21 @@ const handleRemove = (removeButton, tableRow, id) => {
     }
   });
 };
+
 const handleTotalAmount = () => {
+  // calculating the total amount of all the products in the cart
   const total = parsedItems.reduce((sum, element) => sum + element.subTotal, 0);
+  let totalAmount = document.querySelector("#totalAmounts");
+  totalAmount.textContent = total;
+};
+
+const initializingTotalAmount = () => {
+  let totalSubAmount = document.createElement("td");
   let totalDiv = document.querySelector("tfoot");
   let totalSubRow = document.createElement("tr");
   let totalSubPara = document.createElement("td");
-  let totalSubAmount = document.createElement("td");
+
+  totalSubAmount.id = "totalAmounts";
 
   totalDiv.style.marginTop = "10px";
   totalSubRow.style.display = "flex";
@@ -71,14 +90,17 @@ const handleTotalAmount = () => {
   totalSubPara.innerText = "Total";
   totalSubPara.style.fontWeight = "600";
 
-  totalSubAmount.innerText = total;
-  totalSubAmount.style.marginLeft = "40px";
-
   totalSubRow.append(totalSubPara, totalSubAmount);
   totalDiv.appendChild(totalSubRow);
   tableElement.append(totalDiv);
+
+  totalSubAmount.style.marginLeft = "40px";
+
+  handleTotalAmount();
 };
-handleTotalAmount();
+
+initializingTotalAmount();
+
 function handleData() {
   parsedItems.forEach((data) => {
     // create the table rows in the DOM
@@ -88,9 +110,9 @@ function handleData() {
     let tablePriceDetails = document.createElement("td");
     let tableQuantityDetails = document.createElement("td");
     let quantityDiv = document.createElement("div");
-    let negativeButton = document.createElement("button");
+    let decreaseButton = document.createElement("button");
     let increaseButton = document.createElement("button");
-    let paragraphButton = document.createElement("p");
+    let quantity = document.createElement("p");
     let subTotalElement = document.createElement("td");
 
     let removeButton = document.createElement("button");
@@ -110,21 +132,21 @@ function handleData() {
     increaseButton.style.margin = "10px";
     increaseButton.style.width = "20px";
     increaseButton.style.height = "20px";
-    negativeButton.style.margin = "10px";
-    negativeButton.style.width = "20px";
-    negativeButton.style.height = "20px";
+    decreaseButton.style.margin = "10px";
+    decreaseButton.style.width = "20px";
+    decreaseButton.style.height = "20px";
 
     images.style.width = "80px";
     images.style.height = "80px";
 
     handleQuantity(
       increaseButton,
-      negativeButton,
-      paragraphButton,
+      decreaseButton,
+      quantity,
       subTotalElement,
       data
     );
-    quantityDiv.append(negativeButton, paragraphButton, increaseButton);
+    quantityDiv.append(decreaseButton, quantity, increaseButton);
     tableQuantityDetails.appendChild(quantityDiv);
     tableRow.append(
       tableImageDetails,
@@ -138,20 +160,13 @@ function handleData() {
     images.setAttribute("src", data.image);
 
     tablePriceDetails.innerText = data.price;
-    negativeButton.innerText = "-";
+    decreaseButton.innerText = "-";
     increaseButton.innerText = "+";
-    paragraphButton.innerText = 1;
+    quantity.innerText = data.count;
     subTotalElement.innerText = data.subTotal;
     tableImageDetails.appendChild(images);
+
+    localStorage.setItem("movies", JSON.stringify(parsedItems));
   });
 }
 handleData();
-
-
-
-// getting the total amount
-// get the sub total of each item
-// - loop through the parsed array
-// - get the subTotal of each element
-// - add all the totals together
-// add all the subtotals to get one total
