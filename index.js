@@ -1,6 +1,6 @@
 let cartPage = document.getElementById("cart");
 let anchor = document.createElement("a");
-// when cart is clicked, we are taken to the cart page
+// when cart button is clicked, we are taken to the cart page
 cartPage.addEventListener("click", () => {
   let location = window.location.assign("index.html");
   anchor.setAttribute("href", location);
@@ -79,12 +79,12 @@ let dataDetails = [
 const hanldeAddToCart = (id, addButton) => {
   addButton.addEventListener("click", () => {
     let itemsInStorage = localStorage.getItem("movies");
-    // if there are items in local storage, set the addedItems to that parsed version of those items else we put it becomes an empty array.
+    // If items exist in local storage, change them into their original 
+    // array and assign to the variable, else we assign it with an empty array.
     let addedItems = itemsInStorage ? JSON.parse(itemsInStorage) : [];
     for (let i = 0; i < dataDetails.length; i++) {
-        // we find an item with a specific id and add it to the array as well as locl storage.
       if (dataDetails[i].id === id) {
-        alert('Item added to cart successfully')
+        alert("Item added to cart successfully");
         addedItems.push(dataDetails[i]);
       }
     }
@@ -95,8 +95,7 @@ const hanldeAddToCart = (id, addButton) => {
 const showItems = () => {
   let divForFourItems;
   dataDetails.forEach((data, index) => {
-
-    // show only 4 items each in a row.
+    // show only 4 products each in a row.
     if (index % 4 === 0) {
       divForFourItems = document.createElement("div");
       divForFourItems.style.display = "flex";
