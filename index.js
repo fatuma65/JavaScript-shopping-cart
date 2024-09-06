@@ -3,7 +3,7 @@ let cartPage = document.getElementById("cart");
 let anchor = document.createElement("a");
 // when cart button is clicked, we are taken to the cart page
 cartPage.addEventListener("click", () => {
-  let location = window.location.assign("index.html");
+  let location = window.location.assign("cart.html");
   anchor.setAttribute("href", location);
 });
 cartPage.appendChild(anchor);

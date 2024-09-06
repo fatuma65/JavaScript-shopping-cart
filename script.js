@@ -4,7 +4,7 @@ const tableBody = document.querySelector("tbody");
 // implemment a button that goes back to the previous page
 let back = document.getElementById("back");
 back.addEventListener("click", () => {
-  window.location.href = "home.html";
+  window.location.href = "index.html";
 });
 back.style.padding = "10px";
 back.style.backgroundColor = "#cbb157";
