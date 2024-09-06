@@ -1,3 +1,4 @@
+let mainDiv = document.getElementById("myDiv");
 let cartPage = document.getElementById("cart");
 let anchor = document.createElement("a");
 // when cart button is clicked, we are taken to the cart page
@@ -6,7 +7,6 @@ cartPage.addEventListener("click", () => {
   anchor.setAttribute("href", location);
 });
 cartPage.appendChild(anchor);
-let mainDiv = document.getElementById("myDiv");
 
 // create the products data
 let dataDetails = [
@@ -45,36 +45,46 @@ let dataDetails = [
   {
     id: 5,
     image: "images/black-swan.jpg",
-    price: 15000,
+    price: 13000,
     count: 1,
     title: "Me Before You Movie",
-    subTotal: 15000,
+    subTotal: 13000,
   },
   {
     id: 6,
     image: "images/everest.jpg",
-    price: 15000,
+    price: 8000,
     count: 1,
     title: "Me Before You Movie",
-    subTotal: 15000,
+    subTotal: 8000,
   },
   {
     id: 7,
     image: "images/escape.jpg",
-    price: 15000,
+    price: 10000,
     count: 1,
     title: "Me Before You Movie",
-    subTotal: 15000,
+    subTotal: 10000,
   },
   {
     id: 8,
     image: "images/fair-play.jpg",
-    price: 15000,
+    price: 16000,
     count: 1,
     title: "Me Before You Movie",
-    subTotal: 15000,
+    subTotal: 16000,
   },
 ];
+
+const updateCount = () => {
+  let cartIcon = document.getElementById('item-count')
+  let itemsInStorage = localStorage.getItem("movies");
+
+  let addedItems = itemsInStorage ? JSON.parse(itemsInStorage) : [];
+  // cart is assigned the total number of items in the cart
+  cartIcon.innerText = addedItems.length
+}
+updateCount()
 
 const hanldeAddToCart = (id, addButton) => {
   addButton.addEventListener("click", () => {
@@ -82,6 +92,7 @@ const hanldeAddToCart = (id, addButton) => {
     // If items exist in local storage, change them into their original 
     // array and assign to the variable, else we assign it with an empty array.
     let addedItems = itemsInStorage ? JSON.parse(itemsInStorage) : [];
+    
     for (let i = 0; i < dataDetails.length; i++) {
       if (dataDetails[i].id === id) {
         alert("Item added to cart successfully");
@@ -89,6 +100,7 @@ const hanldeAddToCart = (id, addButton) => {
       }
     }
     localStorage.setItem("movies", JSON.stringify(addedItems));
+    updateCount()
   });
 };
 
@@ -112,7 +124,7 @@ const showItems = () => {
     let image = document.createElement("img");
     image.setAttribute("src", data.image);
     let price = document.createElement("p");
-    price.textContent = data.price;
+    price.textContent = `UGX ${data.price}`;
     let title = document.createElement("p");
     title.innerText = data.title;
     divElement.append(image, title, price, addButton);
