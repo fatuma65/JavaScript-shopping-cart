@@ -1,7 +1,7 @@
 const tableElement = document.querySelector("table");
 const tableBody = document.querySelector("tbody");
 
-// implemment a button that goes back to the previous page
+// implement a button that goes back to the previous page
 let back = document.getElementById("back");
 back.addEventListener("click", () => {
   window.location.href = "index.html";
@@ -12,7 +12,7 @@ back.style.color = "white";
 back.style.margin = "5px";
 
 const addedItems = localStorage.getItem("movies");
-if (addedItems === "[]") {
+if (addedItems === "[]" ) {
   const errorElement = document.createElement("h4");
   errorElement.innerText = "There are no items in cart yet";
   tableBody.appendChild(errorElement);
@@ -60,6 +60,7 @@ const handleRemove = (removeButton, tableRow, id) => {
         parsedItems.splice(i, 1);
         console.log("Item has been removed");
         tableRow.remove();
+        handleTotalAmount()
         // update local storage with the new storage
         localStorage.setItem("movies", JSON.stringify(parsedItems));
       }

@@ -77,33 +77,42 @@ let dataDetails = [
 ];
 
 const updateCount = () => {
-  let cartIcon = document.getElementById('item-count')
+  let cartIcon = document.getElementById("item-count");
   let itemsInStorage = localStorage.getItem("movies");
 
   let addedItems = itemsInStorage ? JSON.parse(itemsInStorage) : [];
   // cart is assigned the total number of items in the cart
-  cartIcon.innerText = addedItems.length
-}
-updateCount()
+  cartIcon.innerText = addedItems.length;
+};
+updateCount();
 
 const hanldeAddToCart = (id, addButton) => {
   addButton.addEventListener("click", () => {
     let itemsInStorage = localStorage.getItem("movies");
-    // If items exist in local storage, change them into their original 
+    // If items exist in local storage, change them into their original
     // array and assign to the variable, else we assign it with an empty array.
     let addedItems = itemsInStorage ? JSON.parse(itemsInStorage) : [];
-    
-    for (let i = 0; i < dataDetails.length; i++) {
-      if (dataDetails[i].id === id) {
-        alert("Item added to cart successfully");
-        addedItems.push(dataDetails[i]);
+    let isItemAlreadyInCart = false;
+
+    for (let i = 0; i < addedItems.length; i++) {
+      if (addedItems[i].id === id) {
+        addedItems[i].count++;
+        alert("Item already exists in the cart");
+        isItemAlreadyInCart = true;
       }
     }
+    if (!isItemAlreadyInCart) {
+      let newItem = dataDetails.find((item) => item.id === id);
+      if (newItem) {
+        addedItems.push(newItem);
+        alert("Item added to cart successfully");
+      }
+    }
+
     localStorage.setItem("movies", JSON.stringify(addedItems));
-    updateCount()
+    updateCount();
   });
 };
-
 const showItems = () => {
   let divForFourItems;
   dataDetails.forEach((data, index) => {
