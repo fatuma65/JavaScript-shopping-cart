@@ -8,73 +8,11 @@ cartPage.addEventListener("click", () => {
 });
 cartPage.appendChild(anchor);
 
-// create the products data
-let dataDetails = [
-  {
-    id: 1,
-    image: "images/after.jpg",
-    price: 12000,
-    count: 1,
-    title: "After Movie",
-    subTotal: 12000,
-  },
-  {
-    id: 2,
-    image: "images/bad-boys.jpg",
-    price: 17000,
-    count: 1,
-    title: "Bad boys Movie",
-    subTotal: 17000,
-  },
-  {
-    id: 3,
-    image: "images/aqua-man.jpg",
-    price: 18000,
-    count: 1,
-    title: "Aqua Man Movie",
-    subTotal: 18000,
-  },
-  {
-    id: 4,
-    image: "images/before.jpg",
-    price: 15000,
-    count: 1,
-    title: "Me Before You Movie",
-    subTotal: 15000,
-  },
-  {
-    id: 5,
-    image: "images/black-swan.jpg",
-    price: 13000,
-    count: 1,
-    title: "Me Before You Movie",
-    subTotal: 13000,
-  },
-  {
-    id: 6,
-    image: "images/everest.jpg",
-    price: 8000,
-    count: 1,
-    title: "Me Before You Movie",
-    subTotal: 8000,
-  },
-  {
-    id: 7,
-    image: "images/escape.jpg",
-    price: 10000,
-    count: 1,
-    title: "Me Before You Movie",
-    subTotal: 10000,
-  },
-  {
-    id: 8,
-    image: "images/fair-play.jpg",
-    price: 16000,
-    count: 1,
-    title: "Me Before You Movie",
-    subTotal: 16000,
-  },
-];
+const fetchProductData = async () => {
+  const response = await fetch("https://fakestoreapi.com/products");
+  const productData = await response.json();
+  return productData;
+};
 
 const updateCount = () => {
   let cartIcon = document.getElementById("item-count");
@@ -86,7 +24,22 @@ const updateCount = () => {
 };
 updateCount();
 
-const hanldeAddToCart = (id, addButton) => {
+// Function to show an alert when item is added or exists in the cart
+const showAlert = (alertMessage) => {
+  const alertItems = document.querySelector(".alert");
+  const message = document.getElementById("message");
+  message.innerText = alertMessage;
+  alertItems.style.display = "flex";
+  alertItems.style.justifyContent = "space-around";
+  const alertButton = document.querySelector("#alertButton");
+  alertButton.style.padding = "0px";
+
+  alertButton.addEventListener("click", () => {
+    alertItems.style.display = "none";
+  });
+};
+const hanldeAddToCart = (id, data, addButton) => {
+  console.log(data);
   addButton.addEventListener("click", () => {
     let itemsInStorage = localStorage.getItem("movies");
     // If items exist in local storage, change them into their original
@@ -96,16 +49,25 @@ const hanldeAddToCart = (id, addButton) => {
 
     for (let i = 0; i < addedItems.length; i++) {
       if (addedItems[i].id === id) {
-        addedItems[i].count++;
-        alert("Item already exists in the cart");
+        // if an item already exists, we show an alert message
+        let alertMessage = "Item already exists in the cart";
+        showAlert(alertMessage);
         isItemAlreadyInCart = true;
       }
     }
     if (!isItemAlreadyInCart) {
-      let newItem = dataDetails.find((item) => item.id === id);
-      if (newItem) {
+      let newItem = {
+        id: data.id,
+        image: data.image,
+        price: Math.floor(data.price),
+        count: 1,
+        title: data.title,
+        subTotal: Math.floor(data.price),
+      };
+      if (newItem) { 
         addedItems.push(newItem);
-        alert("Item added to cart successfully");
+        let alertMessage = "Item has been added sucessfully";
+        showAlert(alertMessage);
       }
     }
 
@@ -113,30 +75,71 @@ const hanldeAddToCart = (id, addButton) => {
     updateCount();
   });
 };
-const showItems = () => {
+
+// function to show rating stars on each product
+const getRatingStars = (rating) => {
+  const wholeStars = Math.floor(rating);
+  const halfStars = rating % 1 >= 0.5;
+  const emptyStars = 5 - Math.ceil(rating);
+
+  let stars = "";
+
+  // We loop through the length of whole stars and add a full icon to each whole number.
+  for (let i = 0; i < wholeStars; i++) {
+    stars += "<i class='bx bxs-star'></i>";
+  }
+
+  if (halfStars) {
+    stars += "<i class='bx bxs-star-half'></i>";
+  }
+
+  for (let i = 0; i < emptyStars; i++) {
+    stars += "<i class='bx bx-star'></i>";
+  }
+
+  return stars;
+};
+const showItems = async () => {
+  const products = await fetchProductData();
   let divForFourItems;
-  dataDetails.forEach((data, index) => {
+  products.forEach((data, index) => {
     // show only 4 products each in a row.
     if (index % 4 === 0) {
       divForFourItems = document.createElement("div");
       divForFourItems.style.display = "flex";
       divForFourItems.style.justifyContent = "center";
-      divForFourItems.style.marginBottom = "20px";
+      divForFourItems.style.marginBottom = "10px";
       mainDiv.appendChild(divForFourItems);
     }
+
+    // reducing the length of the product title
+    let titleLength = 29;
+    let dataTitle = `${data.title}`;
+    let tranculatedTitle = dataTitle.substring(0, titleLength);
+
     const divElement = document.createElement("div");
+    divElement.style.width = "300px";
+    divElement.style.height = "490px";
     let addButton = document.createElement("button");
     addButton.textContent = "Add to cart";
     let id = data.id;
-    hanldeAddToCart(id, addButton);
-    divElement.style.margin = "10px";
+    hanldeAddToCart(id, data, addButton);
+    divElement.style.margin = "5px";
     let image = document.createElement("img");
+    image.style.width = "100%";
     image.setAttribute("src", data.image);
+    let category = document.createElement("p");
+    category.textContent = data.category;
+    let rating = document.createElement("div");
+    const ratingStars = getRatingStars(data.rating.rate);
+    rating.innerHTML = ratingStars;
+    rating.style.color = "#FFB200";
     let price = document.createElement("p");
-    price.textContent = `UGX ${data.price}`;
+    price.style.color = "red";
+    price.textContent = `USD ${data.price}`;
     let title = document.createElement("p");
-    title.innerText = data.title;
-    divElement.append(image, title, price, addButton);
+    title.innerText = tranculatedTitle;
+    divElement.append(image, category, title, price, rating, addButton);
     divForFourItems.appendChild(divElement);
   });
 };
