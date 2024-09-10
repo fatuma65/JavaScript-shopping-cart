@@ -9,9 +9,18 @@ cartPage.addEventListener("click", () => {
 cartPage.appendChild(anchor);
 
 const fetchProductData = async () => {
+  try {
   const response = await fetch("https://fakestoreapi.com/products");
   const productData = await response.json();
   return productData;
+  }
+  catch (error) {
+    const errorElement = document.createElement('p')
+    errorElement.style.textAlign = 'center'
+    errorElement.innerText = 'Please check your internet connection'
+    mainDiv.appendChild(errorElement)
+    console.log('An error has occured', error)
+  }
 };
 
 const updateCount = () => {
@@ -39,7 +48,6 @@ const showAlert = (alertMessage) => {
   });
 };
 const hanldeAddToCart = (id, data, addButton) => {
-  console.log(data);
   addButton.addEventListener("click", () => {
     let itemsInStorage = localStorage.getItem("movies");
     // If items exist in local storage, change them into their original
@@ -140,6 +148,7 @@ const showItems = async () => {
     let title = document.createElement("p");
     title.innerText = tranculatedTitle;
     divElement.append(image, category, title, price, rating, addButton);
+    divForFourItems.appendChild(divElement);
     divForFourItems.appendChild(divElement);
   });
 };
