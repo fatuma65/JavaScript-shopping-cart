@@ -7,8 +7,7 @@ back.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 back.style.padding = "10px";
-back.style.backgroundColor = "#cbb157";
-back.style.color = "white";
+back.style.color = "#000";
 back.style.margin = "5px";
 
 const addedItems = localStorage.getItem("movies");
