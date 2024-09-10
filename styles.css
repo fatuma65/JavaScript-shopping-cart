@@ -45,3 +45,14 @@ tbody td {
 h1 {
     text-align: center;
 }
+#back i {
+    font-size: 1.8em;
+}
+#back {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+}
+#back:hover {
+    background-color: #ddd;
+}
