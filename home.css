@@ -8,7 +8,7 @@ header {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 80px;
+  height: 70px;
   position: fixed;
   background-color: #f4f1f8;
   left:0 ;
@@ -31,7 +31,8 @@ header ul li {
   cursor: pointer;
 }
 main {
-  margin-top: 100px;
+  margin-top: 90px;
+  /* margin-top: 100px; */
 }
 main h1 {
   text-align: center;
@@ -40,7 +41,7 @@ main h1 {
 .myDiv {
   display: flex;
 }
-button {
+#myDiv button {
   background-color: black;
   color: white;
   border-radius: 5px;
@@ -71,4 +72,36 @@ i {
 #item-count {
   font-size: 1.4em;
   padding: 0px;
+}
+.alert {
+   display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin-top: 1px;
+  height: 70px;
+  background-color: yellowgreen; 
+  justify-content: center;
+  color: #fff;
+  z-index: 1000;
+}
+
+.alert button {
+  color: #fff;
+  background: none;
+  font-weight: 700;
+  padding: 0px;
+  border: none;
+  cursor: pointer;
+  height: 30px;
+  padding: 10px;
+  width: 50px;
+  margin-top: 20px;
+  border-radius: .5em;
+}
+.alert button:hover {
+  background-color: #fff;
+  color: black;
+  padding: 10px;
 }

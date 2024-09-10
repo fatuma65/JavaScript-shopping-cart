@@ -12,7 +12,7 @@ back.style.color = "white";
 back.style.margin = "5px";
 
 const addedItems = localStorage.getItem("movies");
-if (addedItems === "[]" ) {
+if (addedItems === "[]") {
   const errorElement = document.createElement("h4");
   errorElement.innerText = "There are no items in cart yet";
   tableBody.appendChild(errorElement);
@@ -46,7 +46,7 @@ const handleQuantity = (
 const handleSubTotal = (subTotalElement, data) => {
   // when i click on the increase button, the subtotal amount increases as well
   data.subTotal = data.price * data.count;
-  subTotalElement.textContent = data.subTotal;
+  subTotalElement.textContent = `USD ${data.subTotal}`;
   handleTotalAmount();
   localStorage.setItem("movies", JSON.stringify(parsedItems));
 };
@@ -72,7 +72,9 @@ const handleTotalAmount = () => {
   // calculating the total amount of all the products in the cart
   const total = parsedItems.reduce((sum, element) => sum + element.subTotal, 0);
   let totalAmount = document.querySelector("#totalAmounts");
-  totalAmount.textContent = total;
+  totalAmount.textContent = `USD ${total}`;
+  totalAmount.style.color = 'red'
+  totalAmount.style.fontWeight = 'bold'
 };
 
 const initializingTotalAmount = () => {
@@ -160,11 +162,11 @@ function handleData() {
 
     images.setAttribute("src", data.image);
 
-    tablePriceDetails.innerText = data.price;
+    tablePriceDetails.innerText = `USD ${data.price}`;
     decreaseButton.innerText = "-";
     increaseButton.innerText = "+";
     quantity.innerText = data.count;
-    subTotalElement.innerText = data.subTotal;
+    subTotalElement.innerText = `USD ${data.subTotal}`;
     tableImageDetails.appendChild(images);
 
     localStorage.setItem("movies", JSON.stringify(parsedItems));
