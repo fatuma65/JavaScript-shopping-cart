@@ -1,15 +1,6 @@
 const tableElement = document.querySelector("table");
 const tableBody = document.querySelector("tbody");
 
-// implement a button that goes back to the previous page
-let back = document.getElementById("back");
-back.addEventListener("click", () => {
-  window.location.href = "index.html";
-});
-back.style.padding = "10px";
-back.style.color = "#000";
-back.style.margin = "5px";
-
 const addedItems = localStorage.getItem("movies");
 if (addedItems === "[]") {
   const errorElement = document.createElement("h4");
@@ -20,6 +11,8 @@ if (addedItems === "[]") {
 // make items gotten from local storage into their original format(array)
 const parsedItems = JSON.parse(addedItems);
 
+const menu = document.getElementById("item-count");
+menu.innerText = parsedItems.length;
 const handleQuantity = (
   increaseButton,
   decreaseButton,
@@ -59,7 +52,7 @@ const handleRemove = (removeButton, tableRow, id) => {
         parsedItems.splice(i, 1);
         console.log("Item has been removed");
         tableRow.remove();
-        handleTotalAmount()
+        handleTotalAmount();
         // update local storage with the new storage
         localStorage.setItem("movies", JSON.stringify(parsedItems));
       }
@@ -72,8 +65,8 @@ const handleTotalAmount = () => {
   const total = parsedItems.reduce((sum, element) => sum + element.subTotal, 0);
   let totalAmount = document.querySelector("#totalAmounts");
   totalAmount.textContent = `USD ${total}`;
-  totalAmount.style.color = 'red'
-  totalAmount.style.fontWeight = 'bold'
+  totalAmount.style.color = "red";
+  totalAmount.style.fontWeight = "bold";
 };
 
 const initializingTotalAmount = () => {
