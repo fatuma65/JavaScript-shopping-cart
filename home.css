@@ -15,11 +15,9 @@ header {
   width: 100%; 
   top: 0;
   z-index: 1000;
-
 }
 header h1 {
   font-weight: 800;
-
 }
 header ul {
   display: flex;
@@ -32,13 +30,11 @@ header ul li {
 }
 main {
   margin-top: 90px;
+  overflow-x: hidden !important;
 }
 main h1 {
   text-align: center;
   font-weight: 600;
-}
-.myDiv {
-  display: flex;
 }
 #myDiv button {
   background-color: black;
@@ -103,4 +99,29 @@ i {
   background-color: #fff;
   color: black;
   padding: 10px;
+}
+
+#myDiv {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 15px;
+}
+@media screen and (max-width: 540px){
+  #myDiv  {
+    grid-template-columns: 1fr !important;
+  }
+  #myDiv button {
+    width:90% !important;
+  }
+}
+@media screen and (min-width: 541px) and (max-width: 768px) {
+  #myDiv  {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 30px;
+  }
+}
+@media screen and (min-width: 789px) and (max-width: 1024px) {
+  #myDiv  {
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
 }

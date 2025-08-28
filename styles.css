@@ -56,3 +56,8 @@ h1 {
 #back:hover {
     background-color: #ddd;
 }
+@media screen and (max-width: 768px) {
+    .shop {
+        width: 97% !important;
+    }
+}
