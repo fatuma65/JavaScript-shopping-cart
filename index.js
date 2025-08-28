@@ -19,13 +19,12 @@ const fetchProductData = async () => {
     errorElement.style.textAlign = 'center'
     errorElement.innerText = 'Please check your internet connection'
     mainDiv.appendChild(errorElement)
-    console.log('An error has occured', error)
   }
 };
 
 const updateCount = () => {
   let cartIcon = document.getElementById("item-count");
-  let itemsInStorage = localStorage.getItem("movies");
+  let itemsInStorage = localStorage.getItem("products");
 
   let addedItems = itemsInStorage ? JSON.parse(itemsInStorage) : [];
   // cart is assigned the total number of items in the cart
@@ -49,7 +48,7 @@ const showAlert = (alertMessage) => {
 };
 const hanldeAddToCart = (id, data, addButton) => {
   addButton.addEventListener("click", () => {
-    let itemsInStorage = localStorage.getItem("movies");
+    let itemsInStorage = localStorage.getItem("products");
     // If items exist in local storage, change them into their original
     // array and assign to the variable, else we assign it with an empty array.
     let addedItems = itemsInStorage ? JSON.parse(itemsInStorage) : [];
@@ -79,7 +78,7 @@ const hanldeAddToCart = (id, data, addButton) => {
       }
     }
 
-    localStorage.setItem("movies", JSON.stringify(addedItems));
+    localStorage.setItem("products", JSON.stringify(addedItems));
     updateCount();
   });
 };
@@ -109,30 +108,20 @@ const getRatingStars = (rating) => {
 };
 const showItems = async () => {
   const products = await fetchProductData();
-  let divForFourItems;
   products.forEach((data, index) => {
-    // show only 4 products each in a row.
-    if (index % 4 === 0) {
-      divForFourItems = document.createElement("div");
-      divForFourItems.style.display = "flex";
-      divForFourItems.style.justifyContent = "center";
-      divForFourItems.style.marginBottom = "10px";
-      mainDiv.appendChild(divForFourItems);
-    }
-
     // reducing the length of the product title
     let titleLength = 29;
     let dataTitle = `${data.title}`;
     let tranculatedTitle = dataTitle.substring(0, titleLength);
 
     const divElement = document.createElement("div");
-    divElement.style.width = "300px";
-    divElement.style.height = "490px";
+    divElement.style.width = "280px";
+    divElement.style.height = "450px";
     let addButton = document.createElement("button");
     addButton.textContent = "Add to cart";
     let id = data.id;
     hanldeAddToCart(id, data, addButton);
-    divElement.style.margin = "5px";
+    divElement.style.marginTop = "40px";
     let image = document.createElement("img");
     image.style.width = "100%";
     image.setAttribute("src", data.image);
@@ -148,8 +137,7 @@ const showItems = async () => {
     let title = document.createElement("p");
     title.innerText = tranculatedTitle;
     divElement.append(image, category, title, price, rating, addButton);
-    divForFourItems.appendChild(divElement);
-    divForFourItems.appendChild(divElement);
+    mainDiv.appendChild(divElement);
   });
 };
 showItems();

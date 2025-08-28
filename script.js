@@ -1,12 +1,11 @@
 const tableElement = document.querySelector("table");
 const tableBody = document.querySelector("tbody");
 
-const addedItems = localStorage.getItem("movies");
+const addedItems = localStorage.getItem("products");
 if (addedItems === "[]") {
   const errorElement = document.createElement("h4");
   errorElement.innerText = "There are no items in cart yet";
   tableBody.appendChild(errorElement);
-  console.log("There are no items stored");
 }
 // make items gotten from local storage into their original format(array)
 const parsedItems = JSON.parse(addedItems);
@@ -40,7 +39,7 @@ const handleSubTotal = (subTotalElement, data) => {
   data.subTotal = data.price * data.count;
   subTotalElement.textContent = `USD ${data.subTotal}`;
   handleTotalAmount();
-  localStorage.setItem("movies", JSON.stringify(parsedItems));
+  localStorage.setItem("products", JSON.stringify(parsedItems));
 };
 
 const handleRemove = (removeButton, tableRow, id) => {
@@ -50,11 +49,10 @@ const handleRemove = (removeButton, tableRow, id) => {
       if (parsedItems[i].id === id) {
         // remove the item with the id
         parsedItems.splice(i, 1);
-        console.log("Item has been removed");
         tableRow.remove();
         handleTotalAmount();
         // update local storage with the new storage
-        localStorage.setItem("movies", JSON.stringify(parsedItems));
+        localStorage.setItem("products", JSON.stringify(parsedItems));
       }
     }
   });
@@ -161,7 +159,7 @@ function handleData() {
     subTotalElement.innerText = `USD ${data.subTotal}`;
     tableImageDetails.appendChild(images);
 
-    localStorage.setItem("movies", JSON.stringify(parsedItems));
+    localStorage.setItem("products", JSON.stringify(parsedItems));
   });
 }
 handleData();
